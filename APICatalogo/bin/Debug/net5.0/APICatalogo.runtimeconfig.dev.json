@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\jhona\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\jhona\\.nuget\\packages"
+      "C:\\Users\\Altbit\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Altbit\\.nuget\\packages"
     ]
   }
 }

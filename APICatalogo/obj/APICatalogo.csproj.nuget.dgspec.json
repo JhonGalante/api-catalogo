@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jhona\\OneDrive\\Documentos\\Projetos Pessoais\\APICatalogo\\APICatalogo\\APICatalogo.csproj": {}
+    "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\APICatalogo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jhona\\OneDrive\\Documentos\\Projetos Pessoais\\APICatalogo\\APICatalogo\\APICatalogo.csproj": {
+    "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\APICatalogo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jhona\\OneDrive\\Documentos\\Projetos Pessoais\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
+        "projectUniqueName": "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\APICatalogo.csproj",
         "projectName": "APICatalogo",
-        "projectPath": "C:\\Users\\jhona\\OneDrive\\Documentos\\Projetos Pessoais\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
-        "packagesPath": "C:\\Users\\jhona\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jhona\\OneDrive\\Documentos\\Projetos Pessoais\\APICatalogo\\APICatalogo\\obj\\",
+        "projectPath": "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\APICatalogo.csproj",
+        "packagesPath": "C:\\Users\\Altbit\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jhona\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Altbit\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,23 +40,35 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[5.0.7, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.7, )"
+              "version": "[5.0.6, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[5.6.3, )"
+              "version": "[6.1.4, )"
             }
           },
           "imports": [
