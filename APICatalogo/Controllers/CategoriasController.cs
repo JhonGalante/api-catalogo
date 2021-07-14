@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APICatalogo.Context;
 using APICatalogo.Models;
+using APICatalogo.Services;
+using APICatalogo.Filter;
+using Microsoft.Extensions.Logging;
 
 namespace APICatalogo.Controllers
 {
@@ -15,16 +18,26 @@ namespace APICatalogo.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ILogger _logger;
 
-        public CategoriasController(AppDbContext context)
+        public CategoriasController(AppDbContext context, ILogger<CategoriasController> logger)
         {
             _context = context;
+            _logger = logger;
+        }
+
+        [HttpGet("/saudacao/{nome}")]
+        public ActionResult<string> GetSaudacao([FromServices] IMeuServico meuServico, string nome)
+        {
+            return meuServico.Saudacao(nome);
         }
 
         // GET: api/Categorias
         [HttpGet("produtos")]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
         {
+            _logger.LogInformation("############## GET api/categorias/produtos ##################");
             return await _context.Categorias.Include(x=> x.Produtos).ToListAsync();
         }
 
@@ -48,11 +61,13 @@ namespace APICatalogo.Controllers
         {
             try
             {
+                _logger.LogInformation($"############## GET api/categorias/id = {id} ##################");
                 var categoria = await _context.Categorias.FindAsync(id);
 
                 if (categoria == null)
                 {
                     return NotFound($"A categoria com id={id} não foi encontrada");
+                    _logger.LogInformation($"############## GET api/categorias/id = {id} NOT FOUND ##################");
                 }
 
                 return categoria;

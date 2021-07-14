@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APICatalogo.Context;
 using APICatalogo.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace APICatalogo.Controllers
 {
@@ -22,16 +23,22 @@ namespace APICatalogo.Controllers
         }
 
         // GET: api/Produtos
-        [HttpGet]
+        [HttpGet("produtos")]
+        [HttpGet("/produtos")]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
             return await _context.Produtos.ToListAsync();
         }
 
         // GET: api/Produtos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GetProduto(int id)
+        //[HttpGet("{id}/{param2?}", Name = "ObterProduto")]
+        [HttpGet("{id:int:min(1)}")]
+        public async Task<ActionResult<Produto>> GetProduto([FromQuery]int id, [BindRequired]string nome)
         {
+
+            //throw new Exception("Exception ao retornar o produto pelo id");
+
+            var nomeProduto = nome;
             var produto = await _context.Produtos.FindAsync(id);
 
             if (produto == null)
