@@ -1,8 +1,11 @@
 using APICatalogo.Context;
+using APICatalogo.DTOs.Mappings;
 using APICatalogo.Extensions;
 using APICatalogo.Filter;
 using APICatalogo.Loggin;
+using APICatalogo.Repository;
 using APICatalogo.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +35,18 @@ namespace APICatalogo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            
+            services.AddSingleton(mapper);
+
             string mySqlConnection = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddScoped<IUnityOfWork, UnitOfWork>();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
@@ -43,6 +57,7 @@ namespace APICatalogo
 
             services.AddTransient<IMeuServico, MeuServico>();
             services.AddScoped<ApiLoggingFilter>();
+            
 
             services.AddSwaggerGen(c =>
             {

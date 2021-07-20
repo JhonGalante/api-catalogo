@@ -10,6 +10,11 @@ using APICatalogo.Models;
 using APICatalogo.Services;
 using APICatalogo.Filter;
 using Microsoft.Extensions.Logging;
+using APICatalogo.Repository;
+using AutoMapper;
+using APICatalogo.DTOs;
+using APICatalogo.Pagination;
+using Newtonsoft.Json;
 
 namespace APICatalogo.Controllers
 {
@@ -17,13 +22,15 @@ namespace APICatalogo.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IUnityOfWork _uof;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
-        public CategoriasController(AppDbContext context, ILogger<CategoriasController> logger)
+        public CategoriasController(IUnityOfWork uof, ILogger<CategoriasController> logger, IMapper mapper)
         {
-            _context = context;
+            _uof = uof;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("/saudacao/{nome}")]
@@ -35,19 +42,31 @@ namespace APICatalogo.Controllers
         // GET: api/Categorias
         [HttpGet("produtos")]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategoriasProdutos()
         {
-            _logger.LogInformation("############## GET api/categorias/produtos ##################");
-            return await _context.Categorias.Include(x=> x.Produtos).ToListAsync();
+            //_logger.LogInformation("############## GET api/categorias/produtos ##################");
+            return _mapper.Map<List<CategoriaDTO>>(_uof.CategoriaRepository.GetCategoriasProdutos().ToList());
         }
 
         // GET: api/Categorias
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategorias()
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
         {
             try
             {
-                return await _context.Categorias.ToListAsync();
+                var categorias = _uof.CategoriaRepository.GetCategorias(categoriaParameters);
+
+                var metadata = new
+                {
+                    categorias.TotalCount,
+                    categorias.PageSize,
+                    categorias.CurrentPage,
+                    categorias.TotalPages,
+                    categorias.HasNext,
+                    categorias.HasPrevious
+                };
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                return _mapper.Map<List<CategoriaDTO>>(categorias);
             }
             catch (Exception)
             {
@@ -57,20 +76,19 @@ namespace APICatalogo.Controllers
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetCategoria(int id)
+        public ActionResult<CategoriaDTO> GetCategoria(int id)
         {
             try
             {
                 _logger.LogInformation($"############## GET api/categorias/id = {id} ##################");
-                var categoria = await _context.Categorias.FindAsync(id);
+                var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
 
                 if (categoria == null)
                 {
                     return NotFound($"A categoria com id={id} não foi encontrada");
-                    _logger.LogInformation($"############## GET api/categorias/id = {id} NOT FOUND ##################");
                 }
 
-                return categoria;
+                return _mapper.Map<CategoriaDTO>(categoria);
             }
             catch (Exception)
             {
@@ -81,18 +99,18 @@ namespace APICatalogo.Controllers
         // PUT: api/Categorias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
+        public IActionResult PutCategoria(int id, CategoriaDTO categoriaDTO)
         {
-            if (id != categoria.CategoriaId)
+            if (id != categoriaDTO.CategoriaId)
             {
                 return BadRequest($"Não foi possivel atualizar a categoria com id={id}");
             }
 
-            _context.Entry(categoria).State = EntityState.Modified;
+            _uof.CategoriaRepository.Update(_mapper.Map<Categoria>(categoriaDTO));
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uof.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -112,14 +130,14 @@ namespace APICatalogo.Controllers
         // POST: api/Categorias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
+        public ActionResult<Categoria> PostCategoria(CategoriaDTO categoriaDTO)
         {
             try
             {
-                _context.Categorias.Add(categoria);
-                await _context.SaveChangesAsync();
+                _uof.CategoriaRepository.Add(_mapper.Map<Categoria>(categoriaDTO));
+                _uof.Commit();
 
-                return CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
+                return CreatedAtAction("GetCategoria", new { id = categoriaDTO.CategoriaId }, categoriaDTO);
             }
             catch (Exception)
             {
@@ -129,18 +147,18 @@ namespace APICatalogo.Controllers
 
         // DELETE: api/Categorias/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategoria(int id)
+        public IActionResult DeleteCategoria(int id)
         {
             try
             {
-                var categoria = await _context.Categorias.FindAsync(id);
+                var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
                 if (categoria == null)
                 {
                     return NotFound();
                 }
 
-                _context.Categorias.Remove(categoria);
-                await _context.SaveChangesAsync();
+                _uof.CategoriaRepository.Delete(categoria);
+                _uof.Commit();
 
                 return NoContent();
             }
@@ -152,7 +170,7 @@ namespace APICatalogo.Controllers
 
         private bool CategoriaExists(int id)
         {
-            return _context.Categorias.Any(e => e.CategoriaId == id);
+            return _uof.CategoriaRepository.GetById(e => e.CategoriaId == id) != null;
         }
     }
 }

@@ -58,7 +58,6 @@ C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\n
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
-C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\obj\Debug\net5.0\APICatalogo.csproj.AssemblyReference.cache
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\obj\Debug\net5.0\APICatalogo.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\obj\Debug\net5.0\APICatalogo.AssemblyInfoInputs.cache
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\obj\Debug\net5.0\APICatalogo.AssemblyInfo.cs
@@ -176,3 +175,6 @@ C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\n
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo\obj\Debug\net5.0\APICatalogo.csproj.AssemblyReference.cache
