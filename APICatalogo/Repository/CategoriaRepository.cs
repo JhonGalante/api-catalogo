@@ -13,15 +13,15 @@ namespace APICatalogo.Repository
     {
         public CategoriaRepository(AppDbContext contexto) : base(contexto){}
 
-        public PagedList<Categoria> GetCategorias(CategoriaParameters categoriaParameters)
+        public async Task<PagedList<Categoria>> GetCategorias(CategoriaParameters categoriaParameters)
         {
-            return PagedList<Categoria>
+            return await PagedList<Categoria>
                 .ToPagedList(Get().OrderBy(on => on.CategoriaId), categoriaParameters.PageNumber, categoriaParameters.PageSize);
         }
 
-        public IEnumerable<Categoria> GetCategoriasProdutos()
+        public async Task<IEnumerable<Categoria>> GetCategoriasProdutos()
         {
-            return Get().Include(x => x.Produtos);
+            return await Get().Include(x => x.Produtos).ToListAsync();
         }
     }
 }

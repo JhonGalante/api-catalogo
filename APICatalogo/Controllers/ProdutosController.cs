@@ -32,9 +32,9 @@ namespace APICatalogo.Controllers
         // GET: api/Produtos
         [HttpGet("produtos")]
         [HttpGet("/produtos")]
-        public ActionResult<IEnumerable<ProdutoDTO>> GetProdutos([FromQuery] ProdutoParameters produtosParameter)
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutos([FromQuery] ProdutoParameters produtosParameter)
         {
-            var produtos = _uof.ProdutoRepository.GetProdutos(produtosParameter);
+            var produtos = await _uof.ProdutoRepository.GetProdutos(produtosParameter);
             var metadata = new
             {
                 produtos.TotalCount,
@@ -53,11 +53,11 @@ namespace APICatalogo.Controllers
         // GET: api/Produtos/5
         //[HttpGet("{id}/{param2?}", Name = "ObterProduto")]
         [HttpGet("{id:int:min(1)}")]
-        public ActionResult<ProdutoDTO> GetProduto(/*[FromQuery]*/int id/*[BindRequired]string nome*/)
+        public async Task<ActionResult<ProdutoDTO>> GetProduto(/*[FromQuery]*/int id/*[BindRequired]string nome*/)
         {
 
             //throw new Exception("Exception ao retornar o produto pelo id");
-            var produto = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
+            var produto = await _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
 
             if (produto == null)
             {
@@ -70,7 +70,7 @@ namespace APICatalogo.Controllers
         // PUT: api/Produtos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutProduto(int id, ProdutoDTO produtoDTO)
+        public async Task<IActionResult> PutProduto(int id, ProdutoDTO produtoDTO)
         {
             if (id != produtoDTO.ProdutoId)
             {
@@ -81,7 +81,7 @@ namespace APICatalogo.Controllers
 
             try
             {
-                _uof.Commit();
+                await _uof.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -101,11 +101,11 @@ namespace APICatalogo.Controllers
         // POST: api/Produtos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<ProdutoDTO> PostProduto(ProdutoDTO produtoDTO)
+        public async Task<ActionResult<ProdutoDTO>> PostProduto(ProdutoDTO produtoDTO)
         {
             var produto = _mapper.Map<Produto>(produtoDTO);
             _uof.ProdutoRepository.Add(produto);
-            _uof.Commit();
+            await _uof.Commit();
 
             var produtoDto = _mapper.Map<ProdutoDTO>(produto);
 
@@ -114,24 +114,24 @@ namespace APICatalogo.Controllers
 
         // DELETE: api/Produtos/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduto(int id)
+        public async Task<IActionResult> DeleteProduto(int id)
         {
-            var produto = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
+            var produto = await _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
             if (produto == null)
             {
                 return NotFound();
             }
 
             _uof.ProdutoRepository.Delete(produto);
-            _uof.Commit();
+            await _uof.Commit();
 
             return NoContent();
         }
 
         [HttpGet("menorPreco")]
-        public ActionResult<IEnumerable<ProdutoDTO>> GetProdutosPreco()
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutosPreco()
         {
-            var produtos = _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+            var produtos = await _uof.ProdutoRepository.GetProdutosPorPreco();
             return _mapper.Map<List<ProdutoDTO>>(produtos);
         }
 

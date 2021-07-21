@@ -42,19 +42,19 @@ namespace APICatalogo.Controllers
         // GET: api/Categorias
         [HttpGet("produtos")]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public ActionResult<IEnumerable<CategoriaDTO>> GetCategoriasProdutos()
+        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategoriasProdutos()
         {
             //_logger.LogInformation("############## GET api/categorias/produtos ##################");
-            return _mapper.Map<List<CategoriaDTO>>(_uof.CategoriaRepository.GetCategoriasProdutos().ToList());
+            return _mapper.Map<List<CategoriaDTO>>(await _uof.CategoriaRepository.GetCategoriasProdutos());
         }
 
         // GET: api/Categorias
         [HttpGet]
-        public ActionResult<IEnumerable<CategoriaDTO>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
+        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
         {
             try
             {
-                var categorias = _uof.CategoriaRepository.GetCategorias(categoriaParameters);
+                var categorias = await _uof.CategoriaRepository.GetCategorias(categoriaParameters);
 
                 var metadata = new
                 {
@@ -76,12 +76,12 @@ namespace APICatalogo.Controllers
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
-        public ActionResult<CategoriaDTO> GetCategoria(int id)
+        public async Task<ActionResult<CategoriaDTO>> GetCategoria(int id)
         {
             try
             {
                 _logger.LogInformation($"############## GET api/categorias/id = {id} ##################");
-                var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
+                var categoria = await _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
 
                 if (categoria == null)
                 {
@@ -99,7 +99,7 @@ namespace APICatalogo.Controllers
         // PUT: api/Categorias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutCategoria(int id, CategoriaDTO categoriaDTO)
+        public async Task<IActionResult> PutCategoria(int id, CategoriaDTO categoriaDTO)
         {
             if (id != categoriaDTO.CategoriaId)
             {
@@ -110,7 +110,7 @@ namespace APICatalogo.Controllers
 
             try
             {
-                _uof.Commit();
+                await _uof.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -130,12 +130,12 @@ namespace APICatalogo.Controllers
         // POST: api/Categorias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<Categoria> PostCategoria(CategoriaDTO categoriaDTO)
+        public async Task<ActionResult<Categoria>> PostCategoria(CategoriaDTO categoriaDTO)
         {
             try
             {
                 _uof.CategoriaRepository.Add(_mapper.Map<Categoria>(categoriaDTO));
-                _uof.Commit();
+                await _uof.Commit();
 
                 return CreatedAtAction("GetCategoria", new { id = categoriaDTO.CategoriaId }, categoriaDTO);
             }
@@ -147,18 +147,18 @@ namespace APICatalogo.Controllers
 
         // DELETE: api/Categorias/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategoria(int id)
+        public async Task<IActionResult> DeleteCategoria(int id)
         {
             try
             {
-                var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
+                var categoria = await _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
                 if (categoria == null)
                 {
                     return NotFound();
                 }
 
                 _uof.CategoriaRepository.Delete(categoria);
-                _uof.Commit();
+                await _uof.Commit();
 
                 return NoContent();
             }
