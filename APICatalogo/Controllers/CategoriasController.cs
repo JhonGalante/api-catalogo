@@ -15,11 +15,15 @@ using AutoMapper;
 using APICatalogo.DTOs;
 using APICatalogo.Pagination;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace APICatalogo.Controllers
 {
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
+    //[EnableCors("PermitirApiRequest")]
     public class CategoriasController : ControllerBase
     {
         private readonly IUnityOfWork _uof;
@@ -76,6 +80,7 @@ namespace APICatalogo.Controllers
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
+        [EnableCors("PermitirApiRequest")]
         public async Task<ActionResult<CategoriaDTO>> GetCategoria(int id)
         {
             try

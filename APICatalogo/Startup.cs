@@ -6,19 +6,23 @@ using APICatalogo.Loggin;
 using APICatalogo.Repository;
 using APICatalogo.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace APICatalogo
@@ -35,13 +39,40 @@ namespace APICatalogo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("PermitirApiRequest",
+                    builder =>
+                    builder.WithOrigins("https://apirequest.io")
+                           .WithMethods("GET"));
+            });
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
-            
+
+            //JWT
+            //adiciona o manipulador de autenticacao e define o 
+            //esquema de autenticacao usado : Bearer
+            //valida o emissor, a audiencia e a chave
+            //usando a chave secreta valida a assinatura
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidAudience = Configuration["TokenConfiguration:Audience"],
+                     ValidIssuer = Configuration["TokenConfiguration:Issuer"],
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = new SymmetricSecurityKey(
+                         Encoding.UTF8.GetBytes(Configuration["Jwt:key"]))
+                 });
+
             services.AddSingleton(mapper);
 
             string mySqlConnection = Configuration.GetConnectionString("DefaultConnection");
@@ -51,13 +82,14 @@ namespace APICatalogo
             services.AddDbContext<AppDbContext>(options =>
                 options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
 
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
             services.AddTransient<IMeuServico, MeuServico>();
             services.AddScoped<ApiLoggingFilter>();
-            
 
             services.AddSwaggerGen(c =>
             {
@@ -87,7 +119,19 @@ namespace APICatalogo
 
             app.UseRouting();
 
+            //usa middleware de autentificação
+            app.UseAuthentication();
+
+            //usa middleware de autorização
             app.UseAuthorization();
+
+            app.UseAuthorization();
+
+            //app.UseCors(opt =>
+            //        opt.WithOrigins("https://apirequest.io")
+            //               .WithMethods("GET"));
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

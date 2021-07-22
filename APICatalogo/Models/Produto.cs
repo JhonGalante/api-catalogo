@@ -20,6 +20,9 @@ namespace APICatalogo.Models
         [MaxLength(300)]
         public string Descricao { get; set; }
         [Required]
+        [Range(1,10000, ErrorMessage = "O preço deve estar entre {1} e {2}")]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(8, 2)")]
         public decimal Preco { get; set; }
         [Required]
         [MaxLength(300)]

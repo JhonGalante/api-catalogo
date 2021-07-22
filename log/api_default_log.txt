@@ -52,3 +52,39 @@ Information: 0 - ############## OnActionExecuting! #################
 Information: 0 - ############## OnActionExecuted! #################
 Information: 0 - ############## GET api/categorias/id = 1 ##################
 Information: 0 - ############## GET api/categorias/id = 1 ##################
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Warning: 14 - User password validation failed: PasswordTooShort;PasswordRequiresNonAlphanumeric;PasswordRequiresLower;PasswordRequiresUpper.
+Warning: 14 - User password validation failed: PasswordRequiresNonAlphanumeric.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Users\Altbit\Documents\Projetos Pessoais\api-catalogo\APICatalogo
+Information: 0 - ############## GET api/categorias/id = 1 ##################
