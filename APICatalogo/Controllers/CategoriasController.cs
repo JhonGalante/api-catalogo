@@ -23,6 +23,8 @@ namespace APICatalogo.Controllers
     //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     //[EnableCors("PermitirApiRequest")]
     public class CategoriasController : ControllerBase
     {
@@ -30,10 +32,10 @@ namespace APICatalogo.Controllers
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public CategoriasController(IUnityOfWork uof, ILogger<CategoriasController> logger, IMapper mapper)
+        public CategoriasController(IUnityOfWork uof, /*ILogger<CategoriasController> logger*/ IMapper mapper)
         {
             _uof = uof;
-            _logger = logger;
+            //_logger = logger;
             _mapper = mapper;
         }
 
@@ -46,19 +48,31 @@ namespace APICatalogo.Controllers
         // GET: api/Categorias
         [HttpGet("produtos")]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategoriasProdutos()
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategoriasProdutos()
         {
-            //_logger.LogInformation("############## GET api/categorias/produtos ##################");
-            return _mapper.Map<List<CategoriaDTO>>(await _uof.CategoriaRepository.GetCategoriasProdutos());
+            try
+            {
+                //_logger.LogInformation("############## GET api/categorias/produtos ##################");
+                var categorias = _uof.CategoriaRepository.GetCategoriasProdutos().ToList();
+                var categoriasDto = _mapper.Map<List<CategoriaDTO>>(categorias);
+                //throw new Exception();
+                return categoriasDto;
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+            
         }
 
         // GET: api/Categorias
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
         {
             try
             {
-                var categorias = await _uof.CategoriaRepository.GetCategorias(categoriaParameters);
+                var categorias = _uof.CategoriaRepository.GetCategorias(categoriaParameters);
 
                 var metadata = new
                 {
@@ -78,9 +92,15 @@ namespace APICatalogo.Controllers
             }
         }
 
-        // GET: api/Categorias/5
+        /// <summary>
+        /// Obtem uma categoria pelo seu ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Objetos categoria</returns>
         [HttpGet("{id}")]
         [EnableCors("PermitirApiRequest")]
+        //[ProducesResponseType(typeof(ProdutoDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoriaDTO>> GetCategoria(int id)
         {
             try
@@ -104,6 +124,7 @@ namespace APICatalogo.Controllers
         // PUT: api/Categorias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        //[ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<IActionResult> PutCategoria(int id, CategoriaDTO categoriaDTO)
         {
             if (id != categoriaDTO.CategoriaId)
@@ -133,8 +154,24 @@ namespace APICatalogo.Controllers
         }
 
         // POST: api/Categorias
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Inclui uma nova categoria
+        /// </summary>
+        /// <remarks>
+        ///     Exemplo de request:
+        ///         POST api/categorias
+        ///         {
+        ///             "categoriaId": 1,
+        ///             "nome": "categoria1",
+        ///             "imagemUrl": "https://teste.com.br/1"
+        ///         }
+        /// </remarks>
+        /// <param name="categoriaDTO"></param>
+        /// <returns>Retorna um objeto de categoria incluído</returns>
         [HttpPost]
+        //[ProducesResponseType(StatusCodes.Status201Created)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Categoria>> PostCategoria(CategoriaDTO categoriaDTO)
         {
             try

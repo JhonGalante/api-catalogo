@@ -9,9 +9,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,10 +20,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace APICatalogo
 {
@@ -91,9 +92,38 @@ namespace APICatalogo
             services.AddTransient<IMeuServico, MeuServico>();
             services.AddScoped<ApiLoggingFilter>();
 
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+            });
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "APICatalogo", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "APICatalogo", 
+                    Version = "v1",
+                    Description = "Catalogo de Produtos e suas categorias",
+                    TermsOfService = new Uri("https://jhonata-galante.com.br/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Jhonata",
+                        Email = "jhonata.galante@gmail.com",
+                        Url = new Uri("https://jhonata-galante.com.br")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Usar sobre LICX",
+                        Url = new Uri("https://jhonata-galante.com.br/license")
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

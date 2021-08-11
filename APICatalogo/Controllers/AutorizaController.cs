@@ -16,6 +16,7 @@ namespace APICatalogo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class AutorizaController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;

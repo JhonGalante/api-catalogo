@@ -19,9 +19,9 @@ namespace APICatalogo.Repository
                 .ToPagedList(Get().OrderBy(on => on.CategoriaId), categoriaParameters.PageNumber, categoriaParameters.PageSize);
         }
 
-        public async Task<IEnumerable<Categoria>> GetCategoriasProdutos()
+        public IEnumerable<Categoria> GetCategoriasProdutos()
         {
-            return await Get().Include(x => x.Produtos).ToListAsync();
+            return Get().Include(x => x.Produtos);
         }
     }
 }

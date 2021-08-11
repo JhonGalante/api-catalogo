@@ -18,6 +18,7 @@ namespace APICatalogo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ProdutosController : ControllerBase
     {
         private readonly IUnityOfWork _uof;

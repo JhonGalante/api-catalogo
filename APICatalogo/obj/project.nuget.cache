@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Nf1cIz5McWWOu3y/7Y9WZ5VTEIL7Gdl8jYIonBNKLAheTqDQnHSa6czhhp35g653oyKo0PFaXsMGwjBIIsp7gQ==",
+  "dgSpecHash": "aHqgqiB2PPb3cHKa6uiLspGRPakXNzWfqZI+IGxirIgTD0deLfncNzPwh80d3T0b1+6c00W20OijkQSJPaZxeQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Altbit\\Documents\\Projetos Pessoais\\api-catalogo\\APICatalogo\\APICatalogo.csproj",
   "expectedPackageFiles": [
@@ -17,7 +17,9 @@
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.8\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.8.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.8\\microsoft.aspnetcore.jsonpatch.5.0.8.nupkg.sha512",
+    "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.mvc.api.analyzers\\2.2.6\\microsoft.aspnetcore.mvc.api.analyzers.2.2.6.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.8\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.8.nupkg.sha512",
+    "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\5.0.0\\microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",
     "C:\\Users\\Altbit\\.nuget\\packages\\microsoft.aspnetcore.razor.runtime\\2.2.0\\microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
