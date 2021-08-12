@@ -68,11 +68,11 @@ namespace APICatalogo.Controllers
 
         // GET: api/Categorias
         [HttpGet]
-        public ActionResult<IEnumerable<CategoriaDTO>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
+        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategorias([FromQuery] CategoriaParameters categoriaParameters)
         {
             try
             {
-                var categorias = _uof.CategoriaRepository.GetCategorias(categoriaParameters);
+                var categorias = await _uof.CategoriaRepository.GetCategorias(categoriaParameters);
 
                 var metadata = new
                 {
